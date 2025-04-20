@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field, validator
 
 
 class Component(BaseModel):
+    raw_material_id: str
     similarity_index: str
     amount: float = Field(..., gt=0, le=1, description="Amount as a fraction (e.g., 0.1 for 10%)")
 

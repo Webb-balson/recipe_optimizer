@@ -131,11 +131,12 @@ class RecipeOptimizer:
                 raise ValueError(f"Error processing row {row}: {e}")
         return filtered_data
 
-    def find_alternative_components(self, target_components: List[BaseModel]) -> List[Dict]:
+    def find_alternative_components(self, filtered_data: List[Dict], target_components: List[BaseModel]) -> List[Dict]:
         """
         Find alternative components for a recipe based on similarity index.
 
         Args:
+            filtered_data (List[Dict]): The filtered data to search for alternatives.
             target_components (List[BaseModel]): The target components to find alternatives for.
 
         Returns:
@@ -147,8 +148,8 @@ class RecipeOptimizer:
         recipe = []
         for target in target_components:
             similarity_index = target.similarity_index
-            # Find alternatives with the same similarity index
-            alternatives = [row for row in self.data if row['Similarity Index'] == similarity_index]
+            # Find alternatives with the same similarity index in the filtered data
+            alternatives = [row for row in filtered_data if row['Similarity Index'] == similarity_index]
             if not alternatives:
                 raise HTTPException(status_code=404, detail=f"No alternatives found for similarity index {similarity_index}")
             # Select the cheapest alternative

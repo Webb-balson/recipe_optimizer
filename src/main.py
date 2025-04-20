@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field, validator
 from typing import List
 from pathlib import Path
 
-from reciepe_optimizer_project.schemas.schema import RecipeRequest
+from schemas.schema import RecipeRequest
 from utils.util import DataLoader, AvailabilityParser, RecipeOptimizer
 
 app = FastAPI()
@@ -12,7 +12,7 @@ app = FastAPI()
 @app.post("/optimize-recipe")
 def optimize_recipe(request: RecipeRequest):
     # Path to the CSV file
-    file_path = "/home/webb/recipe_optimizer/recipe_optimizer_project/data/ingredients_info.csv"
+    file_path = str(Path(__file__).resolve().parent.parent / "data" / "ingredients_info.csv")
 
     # Load data using DataLoader
     try:
@@ -33,7 +33,7 @@ def optimize_recipe(request: RecipeRequest):
 
     # Find alternative components for the recipe
     try:
-        recipe = optimizer.find_alternative_components(request.components)
+        recipe = optimizer.find_alternative_components(filtered_data, request.components)
     except HTTPException as e:
         raise e
 
@@ -47,10 +47,14 @@ def optimize_recipe(request: RecipeRequest):
                 "raw_material_id": ingredient['Raw Material ID'],
                 "similarity_index": ingredient['Similarity Index'],
                 "amount": ingredient['Amount'],
-                "price": ingredient['Price'],
-                "cost": ingredient['Cost']
+                "price": f"${ingredient['Price']:.2f}",  # Format price in dollars
+                "cost": f"${ingredient['Cost']:.2f}"    # Format cost in dollars
             }
             for ingredient in recipe
         ],
-        "total_cost": total_cost
+        "total_cost": f"${total_cost:.2f}"  # Format total cost in dollars
     }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
