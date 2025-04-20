@@ -4,16 +4,6 @@ This project provides a FastAPI-based service to optimize a recipe by selecting 
 
 ---
 
-## Features
-
-- Load ingredient data from a CSV file.
-- Filter ingredients based on melting point and country availability.
-- Optimize the recipe by selecting the cheapest components with the same similarity index.
-- Validate user input to ensure the total amount of components sums to 100%.
-- Return the optimized recipe with the total cost.
-
----
-
 ## Approach and Assumptions
 
 ### Approach
@@ -35,26 +25,6 @@ My approach was to identify alternate components with the same similarity index 
   - Handled country availability using categorized lists such as `all`, `exclude`, and `include`.
 
 This approach ensures that the recipe is optimized for cost while adhering to the constraints.
----
-
-## Requirements
-
-- Python 3.11 or higher
-- FastAPI
-- Uvicorn
-
----
-
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone git@github.com:Webb-balson/recipe_optimizer.git
-   cd recipe_optimizer
-
-# Recipe Optimizer API
-
-This project provides a FastAPI-based service to optimize a recipe by selecting the cheapest alternative components with the same similarity index, while adhering to user-defined constraints such as melting point and country of production.
 
 ---
 
@@ -103,7 +73,7 @@ This project provides a FastAPI-based service to optimize a recipe by selecting 
 Optimize a recipe by selecting the cheapest components with the same similarity index, based on user-defined constraints.
 
 Request Model
-  ```bash
+  ```json
   {
     "components": [
       {"raw_material_id": "6Z9K9FXGBN9Y1GXA", "similarity_index": "6489", "amount": 0.1},
@@ -115,31 +85,31 @@ Request Model
   }
 
 Response Model
-  ```bash
+  ```json
   {
     "optimized_recipe": [
       {
-        "raw_material_id": "V4W8XAKYN59WBM1X",
+        "raw_material_id": "9Z70ZMMBEA1863YG",
         "similarity_index": "6489",
         "amount": 0.1,
-        "price": 6.1,
-        "cost": 0.61
+        "price": "$6.50",
+        "cost": "$0.65"
       },
       {
         "raw_material_id": "P5XJ8TYFZZPV79EX",
         "similarity_index": "231",
         "amount": 0.2,
-        "price": 15.0,
-        "cost": 3.0
+        "price": "$15.00",
+        "cost": "$3.00"
       },
       {
         "raw_material_id": "14KRYBWKFWRA891P",
         "similarity_index": "54",
         "amount": 0.7,
-        "price": 2.8,
-        "cost": 1.96
+        "price": "$2.80",
+        "cost": "$1.96"
       }
     ],
-    "total_cost": 5.57
+    "total_cost": "$5.61"
   }
 
