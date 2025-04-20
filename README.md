@@ -84,6 +84,8 @@ Request Model
     "country": "China"
   }
 
+---
+
 Response Model
   ```json
   {
